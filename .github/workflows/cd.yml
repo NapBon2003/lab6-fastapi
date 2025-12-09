@@ -1,6 +1,8 @@
 name: CD
 on:
   push:
+    tags:
+	-'v*'
     branches: [ main ]
 
 jobs:
@@ -12,5 +14,7 @@ jobs:
       run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Build and push
       run: |
+	IMAGE=ghcr.io/napbon2003/lab6-fastapi
+        VERSION="${{ github.ref_name }}"
         docker build -t ghcr.io/napbon2003/python-app:latest .
         docker push ghcr.io/napbon2003/python-app:latest
